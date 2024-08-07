@@ -8,8 +8,7 @@ stack: python 3.10
 
 environment:
   GITHUB_TOKEN:
-    secure: ygZ/Wjv5cu9itNSNUN6z9sguTvsgyQ2txQcXmluFAeuSnABXX6E3gd1fGnimVVAonu6apFd/xobbHM56rQ0p15NQU0ZpGgk06LC1Yl90ArAgaMvIlr0Zrtlvvdrr4xUW
-
+    secure: rEcNnwXVAL90HPlXLc/NMc7yuZDpNfSF/fNIR5MP60CQDbNUye4g2dFStVHV5vH9
 install:
 - pip install -r requirements.txt
 - pip install pyinstaller
