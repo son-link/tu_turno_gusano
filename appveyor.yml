@@ -50,7 +50,7 @@ for:
     - image: macOS
 
   after_build:
-  - tar -czvf turno-gusano-macos.tar.gz -C dist turno-gusano.app
+  - tar -czvf turno-gusano-macos.tar.gz -C dist turno-gusano
 
   artifacts:
   - path: turno-gusano-macos.tar.gz
