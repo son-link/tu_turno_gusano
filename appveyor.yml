@@ -66,5 +66,5 @@ for:
   - tar -czvf turno-gusano-linux.tar.gz -C dist turno-gusano
 
   artifacts:
-  - path: Names.rand-linux.tar.gz
+  - path: turno-gusano-linux.tar.gz
 
