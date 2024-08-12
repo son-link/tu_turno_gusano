@@ -15,7 +15,7 @@ install:
 
 build_script:
 - cp bin/turno-gusano.py .
-- pyinstaller -F turno-gusano.py --windowed --add-data icon.png:icon.png -n turno-gusano
+- pyinstaller -F turno-gusano.py --windowed --add-data turno_gusano/icon.png:turno_gusano/icon.png -n turno-gusano
 
 test: off
 
