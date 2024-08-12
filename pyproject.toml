@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "turno_gusano"
+authors = [
+    {name = "Alfonso Saavedra 'Son Link'", email = "sonlink.dourde@gmail.com"},
+]
+description = "Una pequeña app para generar comandos de chat para un juego de Twitch"
+readme = "README.md"
+requires-python = ">=3.8"
+keywords = ["twitch", "game"]
+license = {text = "MIT"}
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: X11 Applications",
+    "Topic :: Internet"
+]
+dependencies = [
+    "ttkbootstrap",
+    'importlib-metadata; python_version<"3.10"',
+]
+dynamic = ["version"]
+[tool.setuptools.packages.find]
+namespaces = false  # true by default
+[tool.setuptools.package-data]
+turno_gusano = ["*.png", "*.svg"]
+[project.gui-scripts]
+turno-gusano = "turno_gusano:run"

@@ -1,7 +1,7 @@
 image:
 - Visual Studio 2019
 - macOS
-- Ubuntu
+#- Ubuntu
 
 skip_branch_with_pr: true
 stack: python 3.10
@@ -57,14 +57,14 @@ for:
 #
 #   Linux package
 # 
--
-  matrix:
-    only:
-    - image: Ubuntu
+#-
+#  matrix:
+#    only:
+#    - image: Ubuntu
 
-  after_build:
-  - tar -czvf turno-gusano-linux.tar.gz -C dist turno-gusano
+#  after_build:
+#  - tar -czvf turno-gusano-linux.tar.gz -C dist turno-gusano
 
-  artifacts:
-  - path: turno-gusano-linux.tar.gz
+#  artifacts:
+#  - path: turno-gusano-linux.tar.gz
 

@@ -1,6 +1,8 @@
 import ttkbootstrap as ttk
 import ttkbootstrap.constants as constants
+from os import path
 
+LOCAL_DIR = path.dirname(path.realpath(__file__))
 
 class TurnoGusano(ttk.Frame):
     def __init__(self, master):
@@ -239,11 +241,12 @@ class TurnoGusano(ttk.Frame):
         self.clipboard_append(self.getvar('command'))
 
 
-if __name__ == '__main__':
+def run():
+    print(LOCAL_DIR)
     app = ttk.Window(
         themename='superhero',
         title='Tu turno, Gusano',
-        iconphoto='icon.png',
+        iconphoto=f'{LOCAL_DIR}/icon.png',
         resizable=[False, False]
     )
     TurnoGusano(app)
