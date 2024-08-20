@@ -10,17 +10,13 @@ El código está bajo licencia MIT y el icono usado forma parte del pack [Tiny C
 
 ## Como usar:
 
-### Windows y Mac OS
+### Ejecutables
 
-en la página de [releases](https://github.com/son-link/tu_turno_gusano/releases) tenéis los ejecutables para su descarga. Es bajar y listo.
+En la página de [releases](https://github.com/son-link/tu_turno_gusano/releases) tenéis los ejecutables para su descarga. Es bajar y listo.
 
 > El ejecutable para Mac OS de momento no esta disponible para ordenadores con procesadores **M1** y **M2**
 
-### Linux:
-
-Por el momento no hay disponibles ejecutables, por lo que para usarlo hay que seguir los mismos pasos que para usar directamente el código
-
-### Código
+### Desde el código fuente:
 
 Para ejecutar desde el código o instalarlo en el sistema hay que seguir estos pasos:
 
@@ -31,6 +27,8 @@ Por último, ejecuta `source .venv/bin/activate` para activar el entorno virtual
 
 * Ejecuta el comando `pip3 install .`
 Esto instalará tanto el programa como las dependencias
+
+* Tienes que crear una nueva aplicación en Twitch. Tienes las instrucciones dentro del archivo *turno_gusano/twitch.py*. En ese mismo archivo deberás de indicar el nombre del canal (más adelante se añadirá un campo para introducirlo)
 
 * Una vez instalado ejecuta `turno-gusano` y ya podrás usarlo.
 

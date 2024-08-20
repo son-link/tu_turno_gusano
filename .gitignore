@@ -163,3 +163,7 @@ cython_debug/
 
 .venv
 .vscode
+dist
+build
+appimage
+_temp_home/

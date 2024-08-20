@@ -1,14 +1,22 @@
 import ttkbootstrap as ttk
 import ttkbootstrap.constants as constants
 from os import path
+from .twitch import connectToChat, sendCommand, TARGET_CHANNEL
+from twitchAPI.type import ChatEvent
+from twitchAPI.chat import EventData
+import asyncio
+import sys
 
 LOCAL_DIR = path.dirname(path.realpath(__file__))
+
 
 class TurnoGusano(ttk.Frame):
     def __init__(self, master):
         super().__init__(master, padding=20)
         master.place_window_center()
         self.master = master
+        self.twitch = None
+        self.chat = None
 
         self.master['padx'] = 20
         self.master['pady'] = 20
@@ -22,8 +30,8 @@ class TurnoGusano(ttk.Frame):
         ]
         self.optsActions = {
             '': '',
-            'Saltar':   'j',
-            'Voltear':  'f',
+            'Saltar': 'j',
+            'Voltear': 'f',
             'Disparar': 's'
         }
 
@@ -189,8 +197,31 @@ class TurnoGusano(ttk.Frame):
         self.commandText.grid(row=5, column=1, columnspan=2, pady=10, sticky=constants.W)
         self.setvar('command', '')
 
+        # Este botón copia el comando al portapapeles
+        self.btnConTwitch = ttk.Button(
+            master=master,
+            text="Conectar a Twitch",
+            command=self.connectTwitch,
+            bootstyle=constants.SUCCESS,
+            # state=constants.DISABLED
+        )
+        self.btnConTwitch.grid(row=6, column=0, pady=10, sticky=constants.W)
+
+        self.btnSendTwitch = ttk.Button(
+            master=master,
+            text="Enviar al chat",
+            command=self.toChat,
+            bootstyle=constants.SUCCESS,
+            state=constants.DISABLED
+        )
+        self.btnSendTwitch.grid(row=6, column=1, pady=10, sticky=constants.W)
+
         self.anglesWidgets = [self.angle1, self.angle2, self.angle3]
         self.shotForceWidgets = [self.force1, self.force2, self.force3]
+
+        self.master.protocol("WM_DELETE_WINDOW", self.on_closing)
+
+        self.mainloop()
 
     def update_value(self, value, name):
         index = int(name[-1]) - 1
@@ -240,6 +271,27 @@ class TurnoGusano(ttk.Frame):
         self.clipboard_clear()
         self.clipboard_append(self.getvar('command'))
 
+    def connectTwitch(self):
+        self.twitch, self.chat = asyncio.run(connectToChat())
+
+        self.chat.register_event(ChatEvent.READY, self.on_ready)
+        self.chat.start()
+
+    async def on_ready(self, ready_event: EventData):
+        print('Bot is ready for work, joining channels')
+        await ready_event.chat.join_room(TARGET_CHANNEL)
+        self.btnSendTwitch.configure(state=constants.NORMAL)
+
+    def toChat(self):
+        asyncio.run(sendCommand(self.chat, self.getvar('command')))
+
+    def on_closing(self):
+        if (self.chat):
+            self.chat.stop()
+            asyncio.run(self.twitch.close())
+
+        sys.exit()
+
 
 def run():
     print(LOCAL_DIR)
@@ -250,4 +302,4 @@ def run():
         resizable=[False, False]
     )
     TurnoGusano(app)
-    app.mainloop()
+    asyncio.run(app.mainloop())
