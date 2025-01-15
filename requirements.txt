@@ -1,4 +1,4 @@
-git+https://github.com/israel-dryer/ttkbootstrap
+ttkbootstrap
 Pillow
 twitchAPI
 requests
