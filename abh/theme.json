@@ -1,0 +1,27 @@
+{
+	"themes": [
+		{
+			"animalbrawl": {
+				"type": "dark",
+				"colors": {
+					"primary": "#cdfa1e",
+					"secondary": "#94a2a4",
+					"success": "#44aca4",
+					"info": "#3f98d7",
+					"warning": "#d05e2f",
+					"danger": "#d95092",
+					"light": "#A9BDBD",
+					"dark": "#073642",
+					"bg": "#2d473d",
+					"fg": "#ffffff",
+					"selectbg": "#bcc1a6",
+					"selectfg": "#2a352f",
+					"border": "#00252e",
+					"inputfg": "#2a352f",
+					"inputbg": "#bcc1a6",
+					"active": "#002730"
+				}
+			}
+		}
+	]
+}

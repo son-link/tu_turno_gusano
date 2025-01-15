@@ -7,7 +7,7 @@ name = "turno_gusano"
 authors = [
     {name = "Alfonso Saavedra 'Son Link'", email = "sonlink.dourde@gmail.com"},
 ]
-description = "Una pequeña app para generar comandos de chat para un juego de Twitch"
+description = "Una pequeña app para generar comandos de chat para un juego de Twitch: Animal Brawl"
 readme = "README.md"
 requires-python = ">=3.8"
 keywords = ["twitch", "game"]
@@ -22,11 +22,13 @@ dependencies = [
     "ttkbootstrap",
     "twitchAPI",
     'importlib-metadata; python_version<"3.10"',
+    'requests',
+    'keyring'
 ]
 dynamic = ["version"]
 [tool.setuptools.packages.find]
 namespaces = false  # true by default
 [tool.setuptools.package-data]
-turno_gusano = ["*.png", "*.svg"]
+abh = ["*.png", "*.svg", "assets", ".json", "*.ico"]
 [project.gui-scripts]
-turno-gusano = "turno_gusano:run"
+turno-gusano = "abh:run"

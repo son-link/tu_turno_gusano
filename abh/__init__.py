@@ -1,5 +1,9 @@
+import ttkbootstrap.localization
+ttkbootstrap.localization.initialize_localities = bool
+
 import ttkbootstrap as ttk
 import ttkbootstrap.constants as constants
+from ttkbootstrap.style import Style
 from os import path
 from .twitch import connectToChat, sendCommand, TARGET_CHANNEL
 from twitchAPI.type import ChatEvent
@@ -13,6 +17,9 @@ LOCAL_DIR = path.dirname(path.realpath(__file__))
 class TurnoGusano(ttk.Frame):
     def __init__(self, master):
         super().__init__(master, padding=20)
+        style = Style()
+        style.load_user_themes(f'{LOCAL_DIR}/theme.json')
+        style.theme_use(themename='animalbrawl')
         master.place_window_center()
         self.master = master
         self.twitch = None
@@ -41,17 +48,19 @@ class TurnoGusano(ttk.Frame):
             '',
             'Saltar',
             'Voltear',
-            'Disparar'
+            'Disparar',
+            'Puñetazo'
         ]
         self.optsActions = {
             '': '',
             'Saltar': 'j',
             'Voltear': 'f',
-            'Disparar': 's'
+            'Disparar': 's',
+            'Puñetazo': 'p'
         }
 
         # self.skins = ['elephant giraffe hippo monkey panda parrot penguin pig rabbit snake']
-        self.skinsValues = {
+        '''self.skinsValues = {
             'Cerdo': 'pig',
             'Conejo': 'rabbit',
             'Elefante': 'elephant',
@@ -62,7 +71,18 @@ class TurnoGusano(ttk.Frame):
             'Panda': 'panda',
             'Pingüino': 'penguin',
             'Serpiente': 'snake',
+        }'''
+
+        self.skinsValues = {
+            'Cerdo': 'pig',
+            'Gato': 'cat01',
+            'La papa': 'lapapa',
+            'Mono': 'monkey',
+            'Perro': 'dog01',
+            'Pingüino': 'penguin',
+            'Zorro': 'fox'
         }
+
         # self.hats = ['txapela tophat barretina fez sombrero tricornio']
         self.hatsValues = [
             'Txapela',
@@ -111,37 +131,39 @@ class TurnoGusano(ttk.Frame):
         self.accion1.bind(
             '<<ComboboxSelected>>',
             lambda event, entry=self.accion1: self.update_value(entry.get(), 'action1'))
-        self.accion1.grid(row=2, column=0, sticky=constants.W)
+        self.accion1.grid(row=2, column=0, sticky=constants.W, pady=5)
 
-        angle1Frame = ttk.Frame(frame1)
-        angle1Frame.grid(row=2, column=1, sticky=constants.W, padx=10)
+        self.angle1Frame = ttk.Frame(frame1)
+        # self.angle1Frame.grid(row=2, column=1, sticky=constants.W, padx=10)
         self.setvar('angle1', 0)
 
-        angle1Label = ttk.Label(angle1Frame, textvariable='angle1', anchor=constants.CENTER)
+        angle1Label = ttk.Label(self.angle1Frame, textvariable='angle1', anchor=constants.CENTER)
         angle1Label.pack(side=constants.TOP, fill=constants.X, pady=0)
 
         self.angle1 = ttk.Scale(
-            angle1Frame,
+            self.angle1Frame,
             from_=0,
             to=120,
             command=lambda x, y='angle1': self.update_value(x, y),
-            state=constants.DISABLED
+            state=constants.DISABLED,
+            bootstyle=constants.PRIMARY,
         )
         self.angle1.pack()
 
-        force1Frame = ttk.Frame(frame1)
-        force1Frame.grid(row=2, column=2, sticky=constants.W, padx=10)
-        self.setvar('force1', 0)
+        self.force1Frame = ttk.Frame(frame1)
+        # self.force1Frame.grid(row=2, column=2, sticky=constants.W, padx=10)
+        self.setvar('force1', 1)
 
-        angle1Label = ttk.Label(force1Frame, textvariable='force1', anchor=constants.CENTER)
+        angle1Label = ttk.Label(self.force1Frame, textvariable='force1', anchor=constants.CENTER)
         angle1Label.pack(side=constants.TOP, fill=constants.X, pady=0)
 
         self.force1 = ttk.Scale(
-            force1Frame,
+            self.force1Frame,
             from_=1,
             to=10,
             command=lambda x, y='force1': self.update_value(x, y),
-            state=constants.DISABLED
+            state=constants.DISABLED,
+            bootstyle=constants.PRIMARY
         )
         self.force1.pack()
 
@@ -156,17 +178,17 @@ class TurnoGusano(ttk.Frame):
         self.accion2.bind(
             '<<ComboboxSelected>>',
             lambda event, entry=self.accion2: self.update_value(entry.get(), 'action2'))
-        self.accion2.grid(row=3, column=0, sticky=constants.W)
+        self.accion2.grid(row=3, column=0, sticky=constants.W, pady=5)
 
-        angle2Frame = ttk.Frame(frame1)
-        angle2Frame.grid(row=3, column=1, sticky=constants.W, padx=10)
+        self.angle2Frame = ttk.Frame(frame1)
+        # self.angle2Frame.grid(row=3, column=1, sticky=constants.W, padx=10)
         self.setvar('angle2', 0)
 
-        angle2Label = ttk.Label(angle2Frame, textvariable='angle2', anchor=constants.CENTER)
+        angle2Label = ttk.Label(self.angle2Frame, textvariable='angle2', anchor=constants.CENTER)
         angle2Label.pack(side=constants.TOP, fill=constants.X, pady=0)
 
         self.angle2 = ttk.Scale(
-            angle2Frame,
+            self.angle2Frame,
             from_=0,
             to=120,
             command=lambda x, y='angle2': self.update_value(x, y),
@@ -174,15 +196,15 @@ class TurnoGusano(ttk.Frame):
         )
         self.angle2.pack()
 
-        force2Frame = ttk.Frame(frame1)
-        force2Frame.grid(row=3, column=2, sticky=constants.W, padx=10)
-        self.setvar('force2', 0)
+        self.force2Frame = ttk.Frame(frame1)
+        # self.force2Frame.grid(row=3, column=2, sticky=constants.W, padx=10)
+        self.setvar('force2', 1)
 
-        force2Label = ttk.Label(force2Frame, textvariable='force2', anchor=constants.CENTER)
+        force2Label = ttk.Label(self.force2Frame, textvariable='force2', anchor=constants.CENTER)
         force2Label.pack(side=constants.TOP, fill=constants.X, pady=0)
 
         self.force2 = ttk.Scale(
-            force2Frame,
+            self.force2Frame,
             from_=1,
             to=10,
             command=lambda x, y='force2': self.update_value(x, y),
@@ -201,17 +223,17 @@ class TurnoGusano(ttk.Frame):
         self.accion3.bind(
             '<<ComboboxSelected>>',
             lambda event, entry=self.accion3: self.update_value(entry.get(), 'action3'))
-        self.accion3.grid(row=4, column=0, sticky=constants.W)
+        self.accion3.grid(row=4, column=0, sticky=constants.W, pady=5)
 
-        angle3Frame = ttk.Frame(frame1)
-        angle3Frame.grid(row=4, column=1, sticky=constants.W, padx=10)
+        self.angle3Frame = ttk.Frame(frame1)
+        # self.angle3Frame.grid(row=4, column=1, sticky=constants.W, padx=10)
         self.setvar('angle3', 0)
 
-        angle3Label = ttk.Label(angle3Frame, textvariable='angle3', anchor=constants.CENTER)
+        angle3Label = ttk.Label(self.angle3Frame, textvariable='angle3', anchor=constants.CENTER)
         angle3Label.pack(side=constants.TOP, fill=constants.X, pady=0)
 
         self.angle3 = ttk.Scale(
-            angle3Frame,
+            self.angle3Frame,
             from_=0,
             to=120,
             command=lambda x, y='angle3': self.update_value(x, y),
@@ -219,15 +241,15 @@ class TurnoGusano(ttk.Frame):
         )
         self.angle3.pack()
 
-        force3Frame = ttk.Frame(frame1)
-        force3Frame.grid(row=4, column=2, sticky=constants.W, padx=10)
-        self.setvar('force3', 0)
+        self.force3Frame = ttk.Frame(frame1)
+        # self.force3Frame.grid(row=4, column=2, sticky=constants.W, padx=10)
+        self.setvar('force3', 1)
 
-        force3Label = ttk.Label(force3Frame, textvariable='force3', anchor=constants.CENTER)
+        force3Label = ttk.Label(self.force3Frame, textvariable='force3', anchor=constants.CENTER)
         force3Label.pack(side=constants.TOP, fill=constants.X, pady=0)
 
         self.force3 = ttk.Scale(
-            force3Frame,
+            self.force3Frame,
             from_=1,
             to=10,
             command=lambda x, y='force3': self.update_value(x, y),
@@ -240,11 +262,11 @@ class TurnoGusano(ttk.Frame):
             master=frame1,
             text="Copiar",
             command=self.toClipboard,
-            bootstyle=constants.SUCCESS,
+            bootstyle=constants.PRIMARY,
             width=6,
             state=constants.DISABLED,
             image=self.icon_copy,
-            compound=ttk.LEFT
+            compound=ttk.LEFT,
         )
         self.btnCopy.grid(row=5, column=0, pady=10, sticky=constants.W)
 
@@ -257,7 +279,7 @@ class TurnoGusano(ttk.Frame):
             master=frame1,
             text="Conectar a Twitch",
             command=self.connectTwitch,
-            bootstyle=constants.SUCCESS,
+            bootstyle=constants.PRIMARY,
             image=self.icon_twitch,
             compound=ttk.LEFT
         )
@@ -266,7 +288,7 @@ class TurnoGusano(ttk.Frame):
         self.btnPlayTwitch = ttk.Button(
             master=frame1,
             text="Jugar",
-            bootstyle=constants.SUCCESS,
+            bootstyle=constants.PRIMARY,
             state=constants.DISABLED,
             image=self.icon_play,
             compound=ttk.LEFT,
@@ -278,19 +300,17 @@ class TurnoGusano(ttk.Frame):
             master=frame1,
             text="Enviar al chat",
             command=self.toChat,
-            bootstyle=constants.SUCCESS,
+            bootstyle=constants.PRIMARY,
             state=constants.DISABLED,
             image=self.icon_send,
             compound=ttk.LEFT
         )
-        self.btnSendTwitch.grid(row=6, column=2, padx=10, sticky=constants.W)
+        self.btnSendTwitch.grid(row=6, column=2, padx=10, sticky=constants.W, columnspan=2)
 
         # A partir de aquí van las opciones extra del juego
 
         # Aquí almacenaremos los comandos de configuración
         self.setvar('commandConf', '')
-        # separator = ttk.Separator(orient=ttk.VERTICAL, )
-        # separator.grid(row=0, column=3, rowspan=6, padx=10)
 
         text2 = ttk.Label(frame2, text='Otras acciones')
         text2.grid(row=0, column=4, columnspan=3, sticky=constants.W)
@@ -305,15 +325,12 @@ class TurnoGusano(ttk.Frame):
             frame2,
             values=[
                 'Cerdo',
-                'Conejo',
-                'Elefante',
-                'Hipopótamo',
-                'Jirafa',
-                'Loro',
+                'Gato',
+                'La papa',
                 'Mono',
-                'Panda',
+                'Perro',
                 'Pingüino',
-                'Serpiente',
+                'Zorro',
             ],
             state='readonly',
             textvariable='skin'
@@ -392,6 +409,10 @@ class TurnoGusano(ttk.Frame):
 
         # Fin
 
+        # En estos arrays vamos a almacenar varios de los widgets
+        # para poder usarlos más adelante
+        self.anglesFrames = [self.angle1Frame, self.angle2Frame, self.angle3Frame]
+        self.forcesFrames = [self.force1Frame, self.force2Frame, self.force3Frame]
         self.anglesWidgets = [self.angle1, self.angle2, self.angle3]
         self.shotForceWidgets = [self.force1, self.force2, self.force3]
 
@@ -408,10 +429,29 @@ class TurnoGusano(ttk.Frame):
 
             if command == 's':
                 self.anglesWidgets[index].configure(state=constants.NORMAL)
-                self.shotForceWidgets[index].configure(state=constants.NORMAL)
+                self.shotForceWidgets[index].configure(
+                    state=constants.NORMAL,
+                    to=10,
+                    value=1
+                )
+                self.setvar(f'force{index + 1}', 1)
+                self.anglesFrames[index].grid(row=index + 2, column=1, sticky=constants.W, padx=10)
+                self.forcesFrames[index].grid(row=index + 2, column=2, sticky=constants.W, padx=10)
+            elif command == 'j':
+                # self.anglesWidgets[index].configure(state=constants.DISABLED)
+                self.anglesFrames[index].grid_forget()
+                self.forcesFrames[index].grid(row=index + 2, column=2, sticky=constants.W, padx=10)
+                self.shotForceWidgets[index].configure(
+                    state=constants.NORMAL,
+                    to=5,
+                    value=1
+                )
+                self.setvar(f'force{index + 1}', 1)
             else:
-                self.anglesWidgets[index].configure(state=constants.DISABLED)
-                self.shotForceWidgets[index].configure(state=constants.DISABLED)
+                # self.anglesWidgets[index].configure(state=constants.DISABLED)
+                # self.shotForceWidgets[index].configure(state=constants.DISABLED)
+                self.anglesFrames[index].grid_forget()
+                self.forcesFrames[index].grid_forget()
 
         else:
             self.setvar(name, f'{float(value):.0f}')
@@ -433,10 +473,13 @@ class TurnoGusano(ttk.Frame):
                 totalActions += 1
 
             if action == 's':
-                command += f':{angle}:{force}'
+                command += f'{angle}x{force}'
+
+            if action == 'j':
+                command += f'{force}'
 
             if i < 2:
-                command += ';'
+                command += ' '
 
         if totalActions == 3:
             self.btnCopy.configure(state=constants.NORMAL)
@@ -476,6 +519,8 @@ class TurnoGusano(ttk.Frame):
 
     def connectTwitch(self):
         self.twitch, self.chat = asyncio.run(connectToChat())
+        if not self.twitch:
+            self.connectTwitch()
 
         self.chat.register_event(ChatEvent.READY, self.on_ready)
         self.chat.start()
@@ -508,10 +553,9 @@ class TurnoGusano(ttk.Frame):
 
 
 def run():
-    print(LOCAL_DIR)
     app = ttk.Window(
-        themename='superhero',
-        title='Tu turno, Gusano',
+        #themename='animalbrawl',
+        title='Animal Brawl Helper',
         iconphoto=f'{LOCAL_DIR}/icon.png',
         resizable=[False, False]
     )
