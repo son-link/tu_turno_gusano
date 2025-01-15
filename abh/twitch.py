@@ -16,8 +16,8 @@ y crear una con los siguientes datos:
 * Tipo de cliente: Confidencial
 '''
 
-APP_ID = '0l0ghuvfgm13asxaazojpoba2hgmx1'  # El ID de cliente proporcionado por Twitch
-APP_SECRET = 'ghrfgoo3o3d8vs1pz1u4qthwmxhd9k'  # El secreto
+APP_ID = ''  # El ID de cliente proporcionado por Twitch
+APP_SECRET = ''  # El secreto
 USER_SCOPE = [AuthScope.CHAT_READ, AuthScope.CHAT_EDIT]
 TARGET_CHANNEL = 'rafalagoon'  # El chat a conectarse
 SERVICE_NAME = 'animal-brawl-helper'  # El nombre del servicio en el keyring donde se guardaran los tokens
