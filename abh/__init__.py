@@ -32,13 +32,15 @@ class TurnoGusano(ttk.Frame):
 
         # Pestaña del juego
         self.notebook = ttk.Notebook(self.master, padding=10)
-        self.notebook.pack(expand=True)
+        self.notebook.pack(fill=constants.BOTH, expand=True)
 
         frame1 = ttk.Frame(self.notebook, padding=10)
         frame2 = ttk.Frame(self.notebook, padding=10)
 
-        frame1.pack(fill='both', padx=10, pady=10, expand=True)
-        frame2.pack(fill='both', padx=10, pady=10, expand=True)
+        frame1.columnconfigure(1, weight=1)
+
+        frame1.pack(fill=constants.BOTH, padx=10, pady=10, expand=True)
+        frame2.pack(fill=constants.BOTH, padx=10, pady=10, expand=True)
 
         # add frames to notebook
 
@@ -483,7 +485,7 @@ class TurnoGusano(ttk.Frame):
             if i < 2:
                 command += ' '
 
-        if totalActions == 3:
+        if totalActions > 0:
             self.btnCopy.configure(state=constants.NORMAL)
 
         self.setvar('command', command)
@@ -564,7 +566,8 @@ def run():
     app = ttk.Window(
         title='Animal Brawl Helper',
         iconphoto=f'{LOCAL_DIR}/icon.png',
-        resizable=[False, False]
+        resizable=[False, False],
+        minsize=[520, 390]
     )
     TurnoGusano(app)
     asyncio.run(app.mainloop())
