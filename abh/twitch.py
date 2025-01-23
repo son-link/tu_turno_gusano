@@ -47,16 +47,6 @@ class TwitchCon():
         refresh_token = None
         have_tokens = checkTokens()
 
-        '''# Comprobamos si los tokens se encuentran en el keyring
-        try:
-            cred1 = keyring.get_credential(SERVICE_NAME, 'token')
-            token = cred1.password
-            cred2 = keyring.get_credential(SERVICE_NAME, 'refresh_token')
-            refresh_token = cred2.password
-            have_tokens = True
-        except:
-            have_tokens = False'''
-
         if have_tokens:
             try:
                 password = PasswdModal(self.parent)
