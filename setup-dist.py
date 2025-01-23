@@ -1,5 +1,11 @@
-import requests
+import certifi
 from cx_Freeze import Executable, setup
+
+build_options = {
+    'packages': ['certifi'],
+    'include_files': [(certifi.where(), 'cacert.pem'), ('turno_gusano/theme.json', 'theme.json')],
+    'excludes': []
+}
 
 directory_table = [
     ("ProgramMenuFolder", "TARGETDIR", "."),
@@ -12,7 +18,7 @@ msi_data = {
         ("Prog.Id", None, None, "Animal Brawl Helper (nombre temporal), es una pequeña aplicación que genera un comando para Twitch para jugar a un juego para Twitch y que actualmente está en desarrollo", "IconId", None),
     ],
     "Icon": [
-        ("IconId", "turno_gusano/icon.ico"),
+        ("IconId", "abh/icon.ico"),
     ],
 }
 
@@ -22,9 +28,9 @@ bdist_msi_options = {
 }
 
 build_exe_options = {
-    'include_files': [
-        (requests.certs.where(), 'cacert.pem')
-    ],
+    'packages': ['certifi'],
+    'include_files': [(certifi.where(), 'cacert.pem'), ('abh/theme.json', 'theme.json')],
+    'excludes': [],
     "include_msvcr": True
 }
 
