@@ -2,4 +2,4 @@ git+https://github.com/israel-dryer/ttkbootstrap
 Pillow
 twitchAPI
 requests
-keyring
+jsoncrypt

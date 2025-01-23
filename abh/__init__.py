@@ -5,7 +5,7 @@ import ttkbootstrap as ttk
 import ttkbootstrap.constants as constants
 from ttkbootstrap.style import Style
 from os import path
-from .twitch import connectToChat, sendCommand, TARGET_CHANNEL
+from .twitch import TwitchCon, TARGET_CHANNEL
 from twitchAPI.type import ChatEvent
 from twitchAPI.chat import EventData
 import asyncio
@@ -22,8 +22,10 @@ class TurnoGusano(ttk.Frame):
         style.theme_use(themename='animalbrawl')
         master.place_window_center()
         self.master = master
+        self.twitchCon = TwitchCon(master)
         self.twitch = None
         self.chat = None
+        self.__passwd = None
 
         self.master['padx'] = 5
         self.master['pady'] = 5
@@ -518,10 +520,16 @@ class TurnoGusano(ttk.Frame):
             self.clipboard_append(self.getvar('command'))
 
     def connectTwitch(self):
-        self.twitch, self.chat = asyncio.run(connectToChat())
+        self.twitch, self.chat = asyncio.run(self.twitchCon.connectToChat())
         if not self.twitch:
             self.connectTwitch()
 
+        if self.twitch == -1 and self.chat == -1:
+            self.twitch = None
+            self.chat = None
+            return
+
+        self.btnConTwitch.configure(state=constants.DISABLED)
         self.chat.register_event(ChatEvent.READY, self.on_ready)
         self.chat.start()
 
@@ -540,12 +548,12 @@ class TurnoGusano(ttk.Frame):
 
     def toChat(self, conf=False):
         if conf:
-            asyncio.run(sendCommand(self.chat, self.getvar('commandConf')))
+            asyncio.run(self.twitchCon.sendCommand(self.chat, self.getvar('commandConf')))
         else:
-            asyncio.run(sendCommand(self.chat, self.getvar('command')))
+            asyncio.run(self.twitchCon.sendCommand(self.chat, self.getvar('command')))
 
     def on_closing(self):
-        if (self.chat):
+        if self.chat:
             self.chat.stop()
             asyncio.run(self.twitch.close())
 
@@ -554,7 +562,6 @@ class TurnoGusano(ttk.Frame):
 
 def run():
     app = ttk.Window(
-        #themename='animalbrawl',
         title='Animal Brawl Helper',
         iconphoto=f'{LOCAL_DIR}/icon.png',
         resizable=[False, False]

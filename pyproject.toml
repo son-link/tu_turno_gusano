@@ -23,7 +23,7 @@ dependencies = [
     "twitchAPI",
     'importlib-metadata; python_version<"3.10"',
     'requests',
-    'keyring'
+    'jsoncrypt'
 ]
 dynamic = ["version"]
 [tool.setuptools.packages.find]
